@@ -8,6 +8,7 @@ export default function ImageSlider({ images, type }) {
 
   const [current, setCurrent] = useState(0);
   const [animKey, setAnimKey] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   if (!images || images.length === 0) return null;
 
@@ -64,13 +65,26 @@ export default function ImageSlider({ images, type }) {
                 }`}
               >
                 {/* Image */}
-                <div className="h-24 bg-white rounded-lg overflow-hidden flex items-center justify-center">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSelectedIndex((prev) => (prev === index ? null : index))
+                  }
+                  className="h-24 w-full bg-white rounded-lg overflow-hidden flex items-center justify-center border transition-all duration-200"
+                  style={{
+                    borderColor: selectedIndex === index ? "#6E1C1C" : "#E5E7EB",
+                    boxShadow:
+                      selectedIndex === index
+                        ? "0 0 0 2px rgba(110,28,28,0.18)"
+                        : "none",
+                  }}
+                >
                   <img
                     src={item.src}
                     alt={item.name}
                     className="w-full h-full object-contain"
                   />
-                </div>
+                </button>
 
                 {/* ✅ NAME + PRICE */}
                 <div className="mt-1 text-center">
@@ -116,6 +130,20 @@ export default function ImageSlider({ images, type }) {
             }}
           />
         ))}
+      </div>
+
+      <div className="mt-3 flex justify-center">
+        <button
+          type="button"
+          disabled={selectedIndex === null}
+          className="px-4 py-2 text-[11px] font-semibold text-white rounded-full transition-colors duration-200"
+          style={{
+            background: selectedIndex === null ? "#9CA3AF" : "#6E1C1C",
+            cursor: selectedIndex === null ? "not-allowed" : "pointer",
+          }}
+        >
+          Place Order
+        </button>
       </div>
 
     </div>

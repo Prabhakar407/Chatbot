@@ -19,7 +19,6 @@ const BOT_TEXT_START_DELAY = 220;
 const AUTO_QUESTION_GAP = 300;
 const AUTO_QUESTIONS = [
   "Is this available in my size?",
-  "Is this available in my color?",
   "Is this product original?",
   "Is this a duplicate product?",
   "Do you offer cash on delivery?",
@@ -132,6 +131,7 @@ export default function App() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [typedDoneMap, setTypedDoneMap] = useState({});
+  const [detanBookingStep, setDetanBookingStep] = useState("idle");
   const chatRef = useRef(null);
   const hasAutoQuestionRunRef = useRef(false);
 
@@ -166,6 +166,41 @@ export default function App() {
   const getBotResponse = (text) => {
     const msg = text.toLowerCase();
     let response = { sender: "bot", text: "Sorry, I didn't understand that." };
+
+    if (detanBookingStep === "awaiting-confirmation") {
+      if (
+        msg.includes("yes") ||
+        msg.includes("yeah") ||
+        msg.includes("yep") ||
+        msg.includes("book")
+      ) {
+        return {
+          sender: "bot",
+          text:
+            "Here are our De-Tan options:\n1. Basic De-Tan Facial - ₹799\n2. De-Tan + Deep Cleansing Facial - ₹1,299\n3. Premium De-Tan Glow Facial - ₹1,899",
+        };
+      }
+
+      if (msg.includes("no")) {
+        return {
+          sender: "bot",
+          text: "No problem. Let me know if you'd like to explore other services.",
+        };
+      }
+    }
+
+    if (detanBookingStep === "awaiting-service-selection") {
+      if (
+        msg.includes("basic de-tan") ||
+        msg.includes("de-tan + deep cleansing") ||
+        msg.includes("premium de-tan glow")
+      ) {
+        return {
+          sender: "bot",
+          text: "Appointment booked.",
+        };
+      }
+    }
 
     if (msg.includes("available in my size")) {
       response = {
@@ -215,7 +250,7 @@ export default function App() {
     else if (msg.includes("payment")) {
       response = {
         sender: "bot",
-        text: "We offer Credit Card, Debit Card, Online Payments, and Cash on Delivery.",
+        text: "We accept payments through Credit Cards, Debit Cards,UPI and Cash on Delivery.",
       };
     }
 
@@ -257,7 +292,7 @@ export default function App() {
     else if (msg.includes("tan") || msg.includes("tanning")) {
       response = {
         sender: "bot",
-        text: "For tanning concerns, we recommend a De-Tan + Deep Cleansing Facial.",
+        text: "For tanning concerns, we recommend a De-Tan + Deep Cleansing Facial. Would u like to book appointment?",
       };
     }
 
@@ -335,6 +370,31 @@ export default function App() {
   };
 
   const handleBotResponse = (text) => {
+    const normalizedText = text.toLowerCase();
+    if (normalizedText.includes("tan") || normalizedText.includes("tanning")) {
+      setDetanBookingStep("awaiting-confirmation");
+    } else if (
+      detanBookingStep === "awaiting-confirmation" &&
+      (normalizedText.includes("yes") ||
+        normalizedText.includes("yeah") ||
+        normalizedText.includes("yep") ||
+        normalizedText.includes("book"))
+    ) {
+      setDetanBookingStep("awaiting-service-selection");
+    } else if (
+      detanBookingStep === "awaiting-confirmation" &&
+      normalizedText.includes("no")
+    ) {
+      setDetanBookingStep("idle");
+    } else if (
+      detanBookingStep === "awaiting-service-selection" &&
+      (normalizedText.includes("basic de-tan") ||
+        normalizedText.includes("de-tan + deep cleansing") ||
+        normalizedText.includes("premium de-tan glow"))
+    ) {
+      setDetanBookingStep("idle");
+    }
+
     const response = getBotResponse(text);
 
     // ✅ Show typing first then message

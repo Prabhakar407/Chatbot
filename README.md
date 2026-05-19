@@ -1,20 +1,21 @@
-These are the list of question--> 
- "Is this available in my size?",
-  "Is this available in my color?",
-  "Is this product original?",
-  "Is this a duplicate product?",
-  "Do you offer cash on delivery?",
-  "Do you have COD available?",
-  "What payment options do you offer?",
-  "My food arrived cold.",
-  "Where is my order?",
-  "ORD-20260421-7842",
-  "Can I cancel my order?",
-  "How can I track my order?",
-  "How do I track my order?",
-  "I have tanning issues.",
-  "I have blackheads.",
-  "What is the price of a facial?",
-  "What is the price of Nike shoes?",
-  "Show me white shirts.",
-  "Show me blue Nike shoes."
+These are the list of questions:
+
+1. "Is this available in my size?"
+2. "Is this available in my color?"
+3. "Is this product original?"
+4. "Is this a duplicate product?"
+5. "Do you offer cash on delivery?"
+6. "Do you have COD available?"
+7. "What payment options do you offer?"
+8. "My food arrived cold."
+9. "Where is my order?"
+10. "ORD-20260421-7842"
+11. "Can I cancel my order?"
+12. "How can I track my order?"
+13. "How do I track my order?"
+14. "I have tanning issues."
+15. "I have blackheads."
+16. "What is the price of a facial?"
+17. "What is the price of Nike shoes?"
+18. "Show me white shirts."
+19. "Show me blue Nike shoes."
